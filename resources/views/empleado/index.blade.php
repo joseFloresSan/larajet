@@ -23,15 +23,14 @@
     <tbody>
         @foreach($empleados as $empleado)
             <tr>
-                <td>{{$empleado->id}} </td>
+                <td>{{$empleado->id_empleado}} </td>
                 <td>{{$empleado->dni}} </td>
                 <td>{{$empleado->nombre}} </td>
                 <td>{{$empleado->celular}} </td>
                 <td>{{$empleado->direccion}} </td>
-                
                 <td>
-                    <form action="{{route ('empleados.destroy',$empleado->id)}}" method="POST">
-                    <a  href="/empleados/{{$empleado->id}}/edit" class="btn btn-info">Editar</a>
+                    <form action="{{route ('empleados.destroy',$empleado->id_empleado)}}" method="POST">
+                    <a  href="/empleados/{{$empleado->id_empleado}}/edit" class="btn btn-info">Editar</a>
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger">Borrar</button>

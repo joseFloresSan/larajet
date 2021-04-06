@@ -16,6 +16,13 @@ class CreateTableReporte extends Migration
         Schema::create('reportes', function (Blueprint $table) {
             $table->id('id_reportes');
             $table->bigInteger('id_producto')->unsigned();
+            $table->decimal('costoPorOrden',8,2);
+            $table->decimal('costoDeMantenimiento',8,2);
+            $table->integer('unidadesAnuales');
+            $table->integer('unidadesMensuales');
+            $table->integer('stockTeorico');
+            $table->integer('stockReal');
+            $table->decimal('precio',8,2); 
             $table->decimal('inventarioPromedio',8,2);
             $table->decimal('costoConservacion',8,2);
             $table->decimal('costoPedido',8,2);

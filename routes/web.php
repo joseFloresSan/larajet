@@ -23,9 +23,10 @@ Route::get('/crearusuario', function () {
 
 Route::get('/dash','App\Http\Controllers\DashboardController@index');
 
-Route::resource('/productos','App\Http\Controllers\ProductoController');
+Route::resource('/inventario','App\Http\Controllers\InventarioController');
 Route::resource('/costodeconservacions','App\Http\Controllers\ReportesController');
 Route::resource('/empleados','App\Http\Controllers\EmpleadoController');
+Route::resource('/producto','App\Http\Controllers\ProductoController');
 
 
 Route::get('/reportes/costodeconservacions',[\App\Http\Controllers\ReportesController::class, 'showCostoConservacion']);
@@ -38,10 +39,6 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Auth::routes();
 

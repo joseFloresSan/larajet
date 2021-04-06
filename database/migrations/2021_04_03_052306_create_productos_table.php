@@ -17,13 +17,7 @@ class CreateProductosTable extends Migration
             $table->id('id_producto');
             $table->string('codigo',50);
             $table->string('nombre',100);
-            $table->decimal('costoPorOrden',8,2);
-            $table->decimal('costoDeMantenimiento',8,2);
-            $table->integer('unidadesAnuales');
-            $table->integer('unidadesMensuales');
-            $table->integer('stockTeorico');
-            $table->integer('stockReal');
-            $table->decimal('precio',8,2);
+            
             $table->timestamps();
         });
     }

@@ -12,6 +12,13 @@ class Reportes extends Model
     protected $primaryKey = "id_reportes";
     protected $fillable = [
         'id_producto',
+        'costoPorOrden',
+        'costoDeMantenimiento',
+        'unidadesAnuales',
+        'unidadesMensuales',
+        'stockTeorico',
+        'stockReal',
+        'precio',
         'inventarioPromedio',
         'costoConservacion',
         'costoPedido',
@@ -33,5 +40,10 @@ class Reportes extends Model
 
     public function calculateIndiceExactitud($stockReal, $stockTeorico){
         return $indiceExactitud = (($stockTeorico - $stockReal) / $stockReal) * 100; 
+    }
+
+    public function calcStockTeoric($unitsRemoved, $stockTeorico)
+    {
+        return $newStockTeoric = $stockTeorico - $unitsRemoved;
     }
 }

@@ -8,7 +8,7 @@
 
 @section('content')
 <h2>Editar Empleado</h2>
-<form action="/empleados/{{$empleado->id}}"method="POST">
+<form action="/empleados/{{$empleado->id_empleado}}"method="POST">
     @csrf
     @method ('PUT')
     <div class="mb-3">

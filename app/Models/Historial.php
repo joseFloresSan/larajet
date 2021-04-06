@@ -5,13 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Producto extends Model
+class Historial extends Model
 {
     use HasFactory;
-    protected $table = "producto";
-    protected $primaryKey = "id_producto";
+    protected $table = "historial";
+    protected $primaryKey = "id_historial";
     protected $fillable = [
-        'codigo',
-        'nombre',
+        'id_producto',
+        'id_empleado',
+        'unidadesRetiradas',
     ];
 }

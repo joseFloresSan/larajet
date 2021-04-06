@@ -249,8 +249,14 @@ return [
             'submenu' => [
                 [
                     'text' => 'Inventario',
-                    'url'  => '/productos',
+                    'url'  => '/inventario',
                     'icon'  => 'fas fa-italic',
+                    'label_color' => 'success',
+                ], 
+                [
+                    'text' => 'Productos',
+                    'url'  => '/producto',
+                    'icon'  => 'fab fa-product-hunt',
                     'label_color' => 'success',
                 ],   
             ],    
