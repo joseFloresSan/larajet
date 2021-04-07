@@ -15,6 +15,19 @@ class InventarioController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function getStockAnualUnits(Request $request)
+    {
+        $datosProducto = DB::table('reportes as r')
+                         ->join('producto as p','p.id_producto','=','r.id_producto')
+                         ->select('r.stockTeorico','r.unidadesAnuales')
+                         ->where('r.id_producto','=',$request->get('id'))
+                         ->orderByDesc('r.created_at')
+                         ->first();
+        return response(json_encode($datosProducto),200)->header('content-type','text/plain');
+        
+    }
+
     public function index()
     {
         $reportes = DB::table('reportes as r')

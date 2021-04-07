@@ -32,7 +32,7 @@
             <div class="col-sm-3">
                 <div class="mb-3">
                     <label for="" class="form-label">Costo de Mantenimiento</label>
-                    <input id="costodemantenimiento" name="costodemantenimiento" type="number" step="any" placeholder="0.00 %" class="form-control" tabindex="4">
+                    <input  id="costodemantenimiento" name="costodemantenimiento" type="number" step="any" placeholder="0.00 %" class="form-control" tabindex="4">
                 </div>
             </div>
         </div>
@@ -47,13 +47,14 @@
             <div class="col-sm-3">
                 <div class="mb-3">
                     <label for="" class="form-label">Stock</label>
-                    <input id="stock" name="stock" type="number" class="form-control" tabindex="7">
+                    <input disabled id="stock" name="stock" type="number" class="form-control" tabindex="7">
                 </div>
             </div>
-            <div class="col-sm-3">
-                <div class="mb-3">
+            <div class="col-sm-3" >
+                <div class="mb-3" >
                     <label for="" class="form-label">Unidades Anuales</label>
-                    <input id="unidadesanuales" name="unidadesanuales" type="number" class="form-control" tabindex="5">
+                    <input disabled id="unidadesanuales" name="unidadesanuales" type="number" class="form-control" tabindex="5" style="display: inline-block; width:100px;">
+                    <a  class="form-control btn btn-success" id="btnUnidadesAnuales" style="display: inline-block; width:50px; margin-bottom:6px"><i class="far fa-edit"></i></a>
                 </div>
             </div>
             <div class="col-sm-3">
@@ -83,4 +84,42 @@
 @stop
 
 @section('js')
+
+<script>
+    var inputUnidadesAnuales = document.getElementById('unidadesanuales');
+    document.getElementById('btnUnidadesAnuales').addEventListener('click', function(e){
+        console.log("habilitando elemento btnUnidadesAnuales");
+        inputUnidadesAnuales.disabled = false;
+        inputUnidadesAnuales.focus();
+    });
+
+    $("#id_producto").change(function() {
+        var id_producto = $("#id_producto").val();
+        console.log(id_producto);
+
+        $.ajax({
+            url: '/inventario/getStockAnualUnits',
+            method:'POST',
+            data:{
+                id: id_producto,
+                _token:$('input[name="_token"]').val()
+            }
+        }).done(function(res){   
+            
+                console.log(res);
+                if(res !== "null"){
+                    var datosProducto = JSON.parse(res)
+
+                    $("#stock").val(datosProducto.stockTeorico);
+                    $("#unidadesanuales").val(datosProducto.unidadesAnuales);
+                }
+                    else{
+                        $("#stock").val(0);
+                        $("#unidadesanuales").val(0);
+                    }
+                    
+        });
+    });
+</script>
+
 @stop
