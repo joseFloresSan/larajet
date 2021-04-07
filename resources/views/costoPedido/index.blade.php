@@ -26,7 +26,7 @@
         @foreach($costosPedido as $dataCostoPedidos)
             <tr>
                 <td>{{$dataCostoPedidos->id_producto}} </td>
-                <td>{{$dataCostoPedidos->created_at}} </td>
+                <td>{{ \Carbon\Carbon::parse($dataCostoPedidos->created_at)->format('d/m/Y') }} </td>
                 <td>{{$dataCostoPedidos->codigo}} </td>
                 <td>{{$dataCostoPedidos->nombre}} </td>                
                 <td>{{$dataCostoPedidos->costoPorOrden}} </td>

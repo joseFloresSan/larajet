@@ -259,6 +259,12 @@ return [
                     'icon'  => 'fab fa-product-hunt',
                     'label_color' => 'success',
                 ],   
+                [
+                    'text' => 'Historial',
+                    'url'  => '/historial',
+                    'icon'  => 'fas fa-clipboard-list',
+                    'label_color' => 'success',
+                ], 
             ],    
         ],
         

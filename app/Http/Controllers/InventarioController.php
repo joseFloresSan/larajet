@@ -17,10 +17,14 @@ class InventarioController extends Controller
      */
     public function index()
     {
-       
-        $productos  = Producto::all();
-        return view('inventario.index')->with('productos', $productos);
-
+        $reportes = DB::table('reportes as r')
+        ->join('producto as p', 'p.id_producto','=','r.id_producto')
+        ->select('p.nombre','p.codigo','r.id_reportes', 'r.costoPorOrden', 'r.costoDeMantenimiento',
+                 'r.unidadesAnuales', 'r.unidadesMensuales','r.stockTeorico',
+                 'r.stockReal','r.precio','r.inventarioPromedio','r.costoConservacion',
+                 'r.costoPedido','r.indiceExactitud')
+        ->get();
+        return view('inventario.index')->with('reportes', $reportes);
     }
 
     /**
@@ -42,26 +46,21 @@ class InventarioController extends Controller
      */
     public function store(Request $request)
     {
-        $productos = new Producto();
-        $productos->codigo = $request->get('codigo');
-        $productos->nombre = $request->get('nombre');
-        $productos->costoPorOrden = $request->get('costopororden');
-        $productos->costoDeMantenimiento = $request->get('costodemantenimiento');
-        $productos->unidadesAnuales = $request->get('unidadesanuales');
-        $productos->unidadesMensuales = $request->get('unidadesmensuales');
-        $productos->stockTeorico = $request->get('stock');
-        $productos->stockReal = 0;
-        $productos->precio = $request->get('precio');
+        $reporte = new Reportes();
+        $reporte->id_producto = $request->get('id_producto');
+        $reporte->costoPorOrden = $request->get('costopororden');
+        $reporte->costoDeMantenimiento = $request->get('costodemantenimiento');
+        $reporte->unidadesAnuales = $request->get('unidadesanuales');
+        $reporte->unidadesMensuales = $request->get('unidadesmensuales');
+        $reporte->stockTeorico = $request->get('stock');
+        $reporte->stockReal = 0;
+        $reporte->precio = $request->get('precio');
+        $reporte->inventarioPromedio = $reporte->promedioInventario($reporte->unidadesAnuales, $reporte->unidadesMensuales);
+        $reporte->costoConservacion = $reporte->calculateCostoConservacion($reporte->costoDeMantenimiento, $reporte->precio, $reporte->inventarioPromedio);
+        $reporte->costoPedido = $reporte->calculateCostoPedido($reporte->costoPorOrden, $reporte->unidadesAnuales, $reporte->inventarioPromedio);
+        $reporte->indiceExactitud = 0;
 
-        $productos->save();
-
-        $reportes = new Reportes();
-        $reportes->id_producto = $productos->id_producto;
-        $reportes->inventarioPromedio = $reportes->promedioInventario($productos->unidadesAnuales, $productos->unidadesMensuales);
-        $reportes->costoConservacion = $reportes->calculateCostoConservacion($productos->costoDeMantenimiento, $productos->precio, $reportes->inventarioPromedio);
-        $reportes->costoPedido = $reportes->calculateCostoPedido($productos->costoPorOrden, $productos->unidadesAnuales, $reportes->inventarioPromedio);
-        $reportes->indiceExactitud = 0;
-        $reportes->save();
+        $reporte->save();
         
         return redirect('/inventario');
     }

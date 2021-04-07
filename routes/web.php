@@ -27,6 +27,7 @@ Route::resource('/inventario','App\Http\Controllers\InventarioController');
 Route::resource('/costodeconservacions','App\Http\Controllers\ReportesController');
 Route::resource('/empleados','App\Http\Controllers\EmpleadoController');
 Route::resource('/producto','App\Http\Controllers\ProductoController');
+Route::resource('/historial','App\Http\Controllers\HistorialController');
 
 
 Route::get('/reportes/costodeconservacions',[\App\Http\Controllers\ReportesController::class, 'showCostoConservacion']);

@@ -3,43 +3,33 @@
 @section('title', 'Inventario')
 
 @section('content_header')
-    <h1>Costo de conservacion</h1>
+    <h1>Historial de Retiro</h1>
 @stop
 
 @section('content')
+<a href="historial/create" class="btn btn-primary mb-4">Nuevo Registro</a>
 
-<table id="costodeconservacions"class="table table-striped table-bordered shadow-lg mt-4" style="width:100%">
+<table id="productos"class="table table-striped table-bordered shadow-lg mt-4" style="width:100%">
     <thead class="bg-primary text-white">
         <tr>
-            <th scope="col">ID</th>
             <th scope="col">Fecha</th>
-            <th scope="col">Codigo</th>
-            <th scope="col">Nombre</th>            
-            <th scope="col">Costo Mantenimiento</th>
-            <th scope="col">Unidades Anuales</th>
-            <th scope="col">Unidades Mensuales</th>            
-            <th scope="col">Precio</th>
-            <th scope="col">Inventario Promedio</th>
-            <th scope="col">CTM</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Producto</th>
+            <th scope="col">Unidades Retiradas</th>
             <th scope="col">Acciones</th>
         </tr>
     </thead>
     <tbody>
-        @foreach($costosConservacion as $dataCostoConservacion)
+        @foreach($historial as $dataHistorial)
             <tr>
-                <td>{{$dataCostoConservacion->id_producto}} </td>
-                <td>{{ \Carbon\Carbon::parse($dataCostoConservacion->created_at)->format('d/m/Y') }} </td>
-                <td>{{$dataCostoConservacion->codigo}} </td>
-                <td>{{$dataCostoConservacion->nombre}} </td>                
-                <td>{{$dataCostoConservacion->costoDeMantenimiento}} % </td>
-                <td>{{$dataCostoConservacion->unidadesAnuales}} </td>
-                <td>{{$dataCostoConservacion->unidadesMensuales}} </td>
-                <td>{{$dataCostoConservacion->precio}} </td>
-                <td>{{$dataCostoConservacion->inventarioPromedio}} </td>                
-                <td>{{$dataCostoConservacion->costoConservacion}} </td>
+            <td>{{ $dataHistorial->created_at }} </td>
+
+                <td>{{$dataHistorial->empleado}} </td>
+                <td>{{$dataHistorial->producto}} </td>
+                <td>{{$dataHistorial->unidadesRetiradas}} </td>
                 <td>
-                    <form action="{{route ('costodeconservacions.destroy',$dataCostoConservacion->id_producto)}}" method="POST">
-                    
+                    <form action="{{route ('historial.destroy',$dataHistorial->id_historial)}}" method="POST">
+                    <a  href="/historial/{{$dataHistorial->id_historial}}/edit" class="btn btn-info">Editar</a>
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger">Borrar</button>
@@ -63,6 +53,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish_Mexico.json"></script>
 
  <!-- datatables JS -->
  <script type="text/javascript" src="{{asset('datatables/datatables.min.js')}}"></script>    
@@ -73,9 +64,10 @@
      <script src="{{asset('datatables/pdfmake-0.1.36/pdfmake.min.js')}}"></script>    
      <script src="{{asset('datatables/pdfmake-0.1.36/vfs_fonts.js')}}"></script>
      <script src="{{asset('datatables/Buttons-1.5.6/js/buttons.html5.min.js')}}"></script>
+
 <script>
 $(document).ready(function() {    
-    $('#costodeconservacions').DataTable({        
+    $('#productos').DataTable({        
         language: {
                 "lengthMenu": "Mostrar _MENU_ registros",
                 "zeroRecords": "No se encontraron resultados",

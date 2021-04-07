@@ -24,11 +24,11 @@ class ReportesController extends Controller
 
     public function showCostoConservacion()
     {
-        $costosConservacion = DB::table('producto as p')
-            ->join('reportes as r', 'r.id_producto', '=', 'p.id_producto')
-            ->select('p.id_producto', 'p.codigo', 'p.nombre', 'p.costoPorOrden', 
-                     'p.costoDeMantenimiento', 'p.unidadesAnuales', 'p.unidadesMensuales', 
-                     'p.precio', 'p.created_at', 'r.id_reportes', 'r.inventarioPromedio', 
+        $costosConservacion = DB::table('reportes as r')
+            ->join('producto as p', 'p.id_producto', '=', 'r.id_producto')
+            ->select('p.id_producto', 'p.codigo', 'p.nombre', 'r.costoPorOrden', 
+                     'r.costoDeMantenimiento', 'r.unidadesAnuales', 'r.unidadesMensuales', 
+                     'r.precio', 'r.created_at', 'r.id_reportes', 'r.inventarioPromedio', 
                      'r.costoConservacion')
             ->get();
 
@@ -37,11 +37,11 @@ class ReportesController extends Controller
 
     public function showCostoPedido()
     {
-        $costosPedido = DB::table('producto as p')
-            ->join('reportes as r', 'r.id_producto', '=', 'p.id_producto')
-            ->select('p.id_producto', 'p.codigo', 'p.nombre', 'p.costoPorOrden', 
-                     'p.costoDeMantenimiento', 'p.unidadesAnuales', 'p.unidadesMensuales', 
-                    'p.precio', 'p.created_at', 'r.id_reportes', 'r.inventarioPromedio', 
+        $costosPedido = DB::table('reportes as r')
+            ->join('producto as p', 'p.id_producto', '=', 'r.id_producto')
+            ->select('p.id_producto', 'p.codigo', 'p.nombre', 'r.costoPorOrden', 
+                     'r.costoDeMantenimiento', 'r.unidadesAnuales', 
+                     'r.created_at', 'r.id_reportes', 'r.inventarioPromedio', 
                      'r.costoPedido')
             ->get();
 
@@ -50,11 +50,11 @@ class ReportesController extends Controller
 
     public function showIndiceExactitud()
     {
-        $indiceExactitud = DB::table('producto as p')
-            ->join('reportes as r', 'r.id_producto', '=', 'p.id_producto')
-            ->select('p.id_producto', 'p.codigo', 'p.nombre', 'p.costoPorOrden', 
-                     'p.costoDeMantenimiento', 'p.unidadesAnuales', 'p.unidadesMensuales', 
-                     'p.stockTeorico', 'p.stockReal', 'p.precio', 'p.created_at', 'r.id_reportes', 'r.inventarioPromedio', 
+        $indiceExactitud = DB::table('reportes as r')
+            ->join('producto as p', 'p.id_producto', '=', 'r.id_producto')
+            ->select('p.id_producto', 'p.codigo', 'p.nombre', 'r.costoPorOrden', 
+                     'r.costoDeMantenimiento', 'r.unidadesAnuales', 'r.unidadesMensuales', 
+                     'r.stockTeorico', 'r.stockReal', 'r.precio', 'r.created_at', 'r.id_reportes', 'r.inventarioPromedio', 
                      'r.indiceExactitud')
             ->get();
 
