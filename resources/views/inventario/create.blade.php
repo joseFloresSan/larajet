@@ -40,26 +40,26 @@
         <div class="row">
             <div class="col-sm-3">
                 <div class="mb-3">
-                    <label for="" class="form-label">Unidades Mensuales</label>
+                    <label for="unidadesmensuales" class="form-label">Unidades Mensuales</label>
                     <input id="unidadesmensuales" name="unidadesmensuales" type="number" class="form-control" tabindex="6">
                 </div>
             </div>
             <div class="col-sm-3">
                 <div class="mb-3">
-                    <label for="" class="form-label">Stock</label>
-                    <input disabled id="stock" name="stock" type="number" class="form-control" tabindex="7">
+                    <label for="stock" class="form-label">Stock</label>
+                    <input readonly id="stock" name="stock" type="number" class="form-control" tabindex="7">
                 </div>
             </div>
             <div class="col-sm-3" >
                 <div class="mb-3" >
                     <label for="" class="form-label">Unidades Anuales</label>
-                    <input disabled id="unidadesanuales" name="unidadesanuales" type="number" class="form-control" tabindex="5" style="display: inline-block; width:100px;">
+                    <input readonly id="unidadesanuales" name="unidadesanuales" type="number" class="form-control" tabindex="5" style="display: inline-block; width:100px;">
                     <a  class="form-control btn btn-success" id="btnUnidadesAnuales" style="display: inline-block; width:50px; margin-bottom:6px"><i class="far fa-edit"></i></a>
                 </div>
             </div>
             <div class="col-sm-3">
                 <div class="mb-3">
-                    <label for="" class="form-label">Precio</label>
+                    <label for="precio" class="form-label">Precio</label>
                     <input id="precio" name="precio" type="number" step="any" placeholder="S/.   0.00" class="form-control" tabindex="8">
                 </div>
             </div>
@@ -89,7 +89,7 @@
     var inputUnidadesAnuales = document.getElementById('unidadesanuales');
     document.getElementById('btnUnidadesAnuales').addEventListener('click', function(e){
         console.log("habilitando elemento btnUnidadesAnuales");
-        inputUnidadesAnuales.disabled = false;
+        inputUnidadesAnuales.readOnly = false;
         inputUnidadesAnuales.focus();
     });
 

@@ -58,7 +58,7 @@ class HistorialController extends Controller
 
         $reporte = Reportes::where('id_producto','=',$historial->id_producto)->first();
 
-        $reporte->stockTeorico = $reporte->calcStockTeoric($historial->unidadesRetiradas, $reporte->stockTeorico);
+        $reporte->stockTeorico -= $historial->unidadesRetiradas;
 
         $reporte->update();
         return redirect('/historial');
@@ -73,6 +73,7 @@ class HistorialController extends Controller
     public function show($id)
     {
         //
+       
     }
 
     /**
@@ -84,6 +85,11 @@ class HistorialController extends Controller
     public function edit($id)
     {
         //
+        $empleados = Empleado::all();
+        $productos = Producto::all();
+        $historial = Historial::find($id);
+
+        return view('historial.edit', compact('empleados', 'historial', 'productos'));
     }
 
     /**
@@ -96,6 +102,17 @@ class HistorialController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $historial = Historial::find($id);
+
+        
+        $reporte = Reportes::where('id_producto','=',$historial->id_producto)->first();
+        $reporte->stockTeorico = $reporte->updateStockTeoricRemoved($reporte->stockTeorico, $historial->unidadesRetiradas, $request->get('unidadesRetiradas'));
+        $historial->id_producto = $request->get('id_producto');
+        $historial->id_empleado = $request->get('id_empleado');
+        $historial->unidadesRetiradas = $request->get('unidadesRetiradas');
+        $historial->save();
+        $reporte->update();
+        return redirect('/historial');
     }
 
     /**
@@ -107,6 +124,7 @@ class HistorialController extends Controller
     public function destroy($id)
     {
         $historial  = Historial::find($id);
+        
         $historial->delete($id);
 
         return redirect('/historial');

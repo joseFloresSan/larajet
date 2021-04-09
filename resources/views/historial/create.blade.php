@@ -29,10 +29,17 @@
                     @endforeach
                 </select>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-2">
                 <div class="mb-3">
                     <label for="unidadesRetiradas" class ="form-label">Cantidad Retirada</label>
                     <input id="unidadesRetiradas" name="unidadesRetiradas" type="number" class="form-control" placeholder="0 UNITS" tabindex="2">      
+                </div>
+            </div>
+
+            <div class="col-sm-2">
+                <div class="mb-3">
+                    <label for="stock" class ="form-label">Stock Restante</label>
+                    <input disabled id="stock" name="stock" type="number" class="form-control" placeholder="0 UNITS" tabindex="2">      
                 </div>
             </div>
     </div>  
@@ -50,5 +57,57 @@
     <link rel="stylesheet" href="/css/admin_custom.css">
 @stop
 
-@section('js')    
+@section('js')   
+
+    <script>
+        $("#id_producto").change(function() {
+        var id_producto = $("#id_producto").val();
+        console.log(id_producto);
+
+        $.ajax({
+            url: '/inventario/getStockAnualUnits',
+            method:'POST',
+            data:{
+                id: id_producto,
+                _token:$('input[name="_token"]').val()
+            }
+        }).done(function(res){   
+            
+                console.log(res);
+                if(res !== "null"){
+                    var datosProducto = JSON.parse(res)
+
+                    $("#stock").val(datosProducto.stockTeorico);
+                    // $("#unidadesanuales").val(datosProducto.unidadesAnuales);
+                }
+                    else{
+                        $("#stock").val(0);
+                        // $("#unidadesanuales").val(0);
+                    }
+        });
+    });
+
+    
+    $(document).ready(function(){
+        var stock = $("#stock").val();
+        var cont = 0;
+        $("#id_producto").change(function(){
+            cont = 0;
+        });    
+        
+        $("#unidadesRetiradas").keyup(function(){
+            
+            if(cont == 0){
+         stock = $("#stock").val();
+
+            }
+                var unidadesRetiro =  $(this).val();
+                var newStock = stock - unidadesRetiro;
+                $("#stock").val(newStock);
+                
+            cont++;
+            
+        });
+    });
+    </script>
 @stop

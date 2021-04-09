@@ -65,7 +65,7 @@ class InventarioController extends Controller
         $reporte->costoDeMantenimiento = $request->get('costodemantenimiento');
         $reporte->unidadesAnuales = $request->get('unidadesanuales');
         $reporte->unidadesMensuales = $request->get('unidadesmensuales');
-        $reporte->stockTeorico = $request->get('stock');
+        $reporte->stockTeorico = $request->get('stock') + $reporte->unidadesMensuales;
         $reporte->stockReal = 0;
         $reporte->precio = $request->get('precio');
         $reporte->inventarioPromedio = $reporte->promedioInventario($reporte->unidadesAnuales, $reporte->unidadesMensuales);
@@ -97,8 +97,16 @@ class InventarioController extends Controller
      */
     public function edit($id)
     {
-        $producto  = Producto::find($id);
-        return view('inventario.edit')->with('producto', $producto);
+        // $reporte  = Reportes::find($id);
+        $productos = Producto::all();
+        $reporte = DB::table('reportes as r')
+        ->join('producto as p', 'p.id_producto','=','r.id_producto')
+        ->select('p.nombre','p.codigo','r.id_reportes', 'r.costoPorOrden', 'r.costoDeMantenimiento',
+                 'r.unidadesAnuales', 'r.unidadesMensuales','r.stockTeorico','r.precio', 'r.id_producto')
+        ->where('id_reportes','=',$id)
+        ->first();
+
+        return view('inventario.edit', compact('productos', 'reporte'));
     }
 
     /**
@@ -110,33 +118,21 @@ class InventarioController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $reporte_id = DB::table('producto as p')
-        ->join('reportes as r', 'r.id_producto', '=', 'p.id_producto')
-        ->select('p.id_producto', 'r.id_reportes')
-        ->where('p.id_producto', '=', $id)
-        ->first();
+        $reporte = Reportes::findOrFail($id);
+        $reporte->id_producto = $request->get('id_producto');
+        $reporte->costoPorOrden = $request->get('costopororden');
+        $reporte->costoDeMantenimiento = $request->get('costodemantenimiento');
+        $reporte->unidadesAnuales = $request->get('unidadesanuales');
+        $reporte->stockTeorico = $reporte->updateStockTeoric($reporte->stockTeorico, $reporte->unidadesMensuales,$request->get('unidadesmensuales'));
+        $reporte->unidadesMensuales = $request->get('unidadesmensuales');
+        $reporte->stockReal = 0;
+        $reporte->precio = $request->get('precio');
+        $reporte->inventarioPromedio = $reporte->promedioInventario($reporte->unidadesAnuales, $reporte->unidadesMensuales);
+        $reporte->costoConservacion = $reporte->calculateCostoConservacion($reporte->costoDeMantenimiento, $reporte->precio, $reporte->inventarioPromedio);
+        $reporte->costoPedido = $reporte->calculateCostoPedido($reporte->costoPorOrden, $reporte->unidadesAnuales, $reporte->inventarioPromedio);
+        $reporte->indiceExactitud = 0;
 
-        $producto  = Producto::find($id);
-        $producto->codigo = $request->get('codigo');
-        $producto->nombre = $request->get('nombre');
-        $producto->costoPorOrden = $request->get('costopororden');
-        $producto->costoDeMantenimiento = $request->get('costodemantenimiento');
-        $producto->unidadesAnuales = $request->get('unidadesanuales');
-        $producto->unidadesMensuales = $request->get('unidadesmensuales');
-        $producto->stockTeorico = $request->get('stock');
-        $producto->precio = $request->get('precio');
-
-        $producto->update();
-
-        //$reportes = new Reportes();
-        $reportes = Reportes::find($reporte_id->id_reportes);
-        //$reportes = Reportes::where("id_producto","=",$producto->id_producto);
-        $reportes->id_producto = $producto->id_producto;
-        $reportes->inventarioPromedio = $reportes->promedioInventario($producto->unidadesAnuales, $producto->unidadesMensuales);
-        $reportes->costoConservacion = $reportes->calculateCostoConservacion($producto->costoDeMantenimiento, $producto->precio, $reportes->inventarioPromedio);
-        $reportes->costoPedido = $reportes->calculateCostoPedido($producto->costoPorOrden, $producto->unidadesAnuales, $reportes->inventarioPromedio);
-        $reportes->indiceExactitud = 0;
-        $reportes->update();
+        $reporte->update();
 
         return redirect('/inventario');
     }
@@ -149,8 +145,8 @@ class InventarioController extends Controller
      */
     public function destroy($id)
     {
-        $producto  = Producto::find($id);
-        $producto->delete($id);
+        $reportes  = Reportes::find($id);
+        $reportes->delete($id);
 
 
         return redirect('/inventario');

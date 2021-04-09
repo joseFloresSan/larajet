@@ -46,4 +46,34 @@ class Reportes extends Model
     {
         return $newStockTeoric = $stockTeorico - $unitsRemoved;
     }
+
+    public function updateStockTeoricRemoved( $stockTeoric, $lastUnits, $newUnits)
+    {
+        if($newUnits > $lastUnits)
+        {
+            $stockTeoric -= ($newUnits - $lastUnits);
+        }
+        else{
+            $stockTeoric += ($lastUnits - $newUnits);
+        }
+
+        return $stockTeoric;
+    }
+
+    public function updateStockTeoric( $stockTeoric, $lastUnits, $newUnits)
+    {
+        if($newUnits > $lastUnits)
+        {
+            $stockTeoric += ($newUnits - $lastUnits);
+        }
+        else{
+            $stockTeoric -= ($lastUnits - $newUnits);
+        }
+
+        return $stockTeoric;
+    }
+
+    
+
+
 }
