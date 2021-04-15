@@ -27,7 +27,6 @@
             <tr>
                 <td>{{$dataIndiceExactitud->id_producto}} </td>
                 <td>{{ \Carbon\Carbon::parse($dataIndiceExactitud->created_at)->format('d/m/Y') }} </td>
-                
                 <td>{{$dataIndiceExactitud->codigo}} </td>
                 <td>{{$dataIndiceExactitud->nombre}} </td>                
                 <td>{{$dataIndiceExactitud->stockTeorico}} </td>

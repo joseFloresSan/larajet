@@ -19,13 +19,15 @@ class HistorialController extends Controller
     public function index()
     {
         //
+        $empleados = Empleado::all();
+        $productos = Producto::all();
         $historial = DB::table('historial as h')
         ->join('producto as p','p.id_producto','=','h.id_producto')
         ->join('empleados as e','e.id_empleado','=','h.id_empleado')
-        ->select('p.nombre as producto','e.nombre as empleado','h.unidadesRetiradas','h.created_at','h.id_historial','h.created_at')
+        ->select('h.id_producto','p.nombre as producto','h.id_empleado','e.nombre as empleado','h.unidadesRetiradas','h.created_at','h.id_historial','h.created_at')
         ->get();
 
-        return view('historial.index')->with('historial', $historial);
+        return view('historial.retiro.index', compact('historial','empleados','productos'));
     }
 
     /**
@@ -38,7 +40,7 @@ class HistorialController extends Controller
         //
         $productos = Producto::all();
         $empleados = Empleado::all();
-        return view('historial.create', compact('productos', 'empleados'));
+        return view('historial.retiro.create', compact('productos', 'empleados'));
     }
 
     /**
@@ -56,7 +58,7 @@ class HistorialController extends Controller
         $historial->unidadesRetiradas = $request->get('unidadesRetiradas');
         $historial->save();
 
-        $reporte = Reportes::where('id_producto','=',$historial->id_producto)->first();
+        $reporte = Reportes::where('id_producto','=',$historial->id_producto)->orderBy('created_at','desc')->first();
 
         $reporte->stockTeorico -= $historial->unidadesRetiradas;
 
@@ -89,7 +91,7 @@ class HistorialController extends Controller
         $productos = Producto::all();
         $historial = Historial::find($id);
 
-        return view('historial.edit', compact('empleados', 'historial', 'productos'));
+        return view('historial.retiro.edit', compact('empleados', 'historial', 'productos'));
     }
 
     /**
@@ -124,7 +126,6 @@ class HistorialController extends Controller
     public function destroy($id)
     {
         $historial  = Historial::find($id);
-        
         $historial->delete($id);
 
         return redirect('/historial');

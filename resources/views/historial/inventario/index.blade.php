@@ -3,38 +3,43 @@
 @section('title', 'Inventario')
 
 @section('content_header')
-    <h1>Historial de Retiro</h1>
+    <h1>Historial de Inventario </h1>
 @stop
 
 @section('content')
-<a href="historial/create" class="btn btn-primary mb-4">Nuevo Registro</a>
-
 <table id="productos"class="table table-striped table-bordered shadow-lg mt-4" style="width:100%">
     <thead class="bg-primary text-white">
         <tr>
             <th scope="col">Fecha</th>
             <th scope="col">Nombre</th>
-            <th scope="col">Producto</th>
-            <th scope="col">Unidades Retiradas</th>
-            <th scope="col">Acciones</th>
+            <th scope="col">Costo Por Orden</th>
+            <th scope="col">Costo De  <br> Mantenimiento</th>
+            <th scope="col">Unidades <br> Anuales</th>
+            <th scope="col">Unidades  <br> Mensuales</th>
+            <th scope="col">Stock</th>
+            <th scope="col">Precio</th>
+            <!-- <th scope="col">Acciones</th> -->
         </tr>
     </thead>
     <tbody>
-        @foreach($historial as $dataHistorial)
+        @foreach($reportes as $dataReportes)
             <tr>
-            <td>{{ $dataHistorial->created_at }} </td>
-
-                <td>{{$dataHistorial->empleado}} </td>
-                <td>{{$dataHistorial->producto}} </td>
-                <td>{{$dataHistorial->unidadesRetiradas}} </td>
-                <td>
-                    <form action="{{route ('historial.destroy',$dataHistorial->id_historial)}}" method="POST">
-                    <a  href="/historial/{{$dataHistorial->id_historial}}/edit" class="btn btn-info">Editar</a>
+                <td>{{ \Carbon\Carbon::parse($dataReportes->created_at)->format('d/m/Y') }} </td>
+                <td>{{$dataReportes->nombre}} </td>
+                <td>{{$dataReportes->costoPorOrden}} </td>
+                <td>{{$dataReportes->costoDeMantenimiento}} % </td>
+                <td>{{$dataReportes->unidadesAnuales}} </td>
+                <td>{{$dataReportes->unidadesMensuales}} </td>
+                <td>{{$dataReportes->stockTeorico}} </td>
+                <td>{{$dataReportes->precio}} </td>
+                <!-- <td>
+                    <form action="{{route ('inventario.destroy',$dataReportes->id_reportes)}}" method="POST">
+                    <a  href="/inventario/{{$dataReportes->id_reportes}}/edit" class="btn btn-info">Editar</a>
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger">Borrar</button>
                     </form>
-                </td>
+                </td> -->
 
             </tr>
         @endforeach

@@ -3,39 +3,44 @@
 @section('title', 'Inventario')
 
 @section('content_header')
-    <h1>Lista de Productos</h1>
+    <h1>Historial de Retiro</h1>
 @stop
 
 @section('content')
-<!-- <a href="producto/create" class="btn btn-primary mb-4"></a> -->
-<a class="btn btn-info mb-4" href="" data-target="#modal-create-producto" data-toggle="modal"> Crear Producto </a>
-@include('producto.createModal')
+<a class="btn btn-info mb-4" href="" data-target="#modal-create-retiro-producto" data-toggle="modal"> Retirar Producto </a>
+    @include('historial.retiro.createModal')
 <table id="productos"class="table table-striped table-bordered shadow-lg mt-4" style="width:100%">
     <thead class="bg-primary text-white">
         <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Codigo</th>
+            <th scope="col">Fecha</th>
             <th scope="col">Nombre</th>
+            <th scope="col">Producto</th>
+            <th scope="col">Unidades Retiradas</th>
             <th scope="col">Acciones</th>
         </tr>
     </thead>
     <tbody>
-        @foreach($productos as $producto)
+        @foreach($historial as $dataHistorial)
             <tr>
-                <td>{{$producto->id_producto}} </td>
-                <td>{{$producto->codigo}} </td>
-                <td>{{$producto->nombre}} </td>
+                <td>{{ \Carbon\Carbon::parse($dataHistorial->created_at)->format('d/m/Y') }} </td>
+                <td>{{$dataHistorial->empleado}} </td>
+                <td>{{$dataHistorial->producto}} </td>
+                <td>{{$dataHistorial->unidadesRetiradas}} </td>
                 <td>
-                    <a class="btn btn-info mb-4" href="" data-target="#modal-edit-{{$producto->id_producto}}" data-toggle="modal">Editar</a>
-                    <a class="btn btn-danger mb-4" href="" data-target="#modal-delete-{{$producto->id_producto}}" data-toggle="modal">Eliminar</a>
-                </td>
+                <a class="btn btn-info mb-4" href="" data-target="#modal-edit-{{$dataHistorial->id_historial}}" data-toggle="modal">Editar</a>
+                <a class="btn btn-danger mb-4" href="" data-target="#modal-delete-{{$dataHistorial->id_historial}}" data-toggle="modal">Borrar</a>
 
+                    <!-- <form action="{{route ('historial.destroy',$dataHistorial->id_historial)}}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Borrar</button>
+                    </form> -->
+                </td>
             </tr>
-            @include('producto.deleteModal')
-            @include('producto.editModal')
+            @include('historial.retiro.editModal')
+            @include('historial.retiro.deleteModal')
         @endforeach
     </tbody>
-
 </table>
 @stop
 
@@ -45,6 +50,8 @@
 @stop
 
 @section('js')
+
+
     
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
@@ -104,5 +111,57 @@ $(document).ready(function() {
 		]	        
     });     
 });
+</script>
+
+<script>
+        $("#id_producto").change(function() {
+        var id_producto = $("#id_producto").val();
+        console.log(id_producto);
+
+        $.ajax({
+            url: '/inventario/getStockAnualUnits',
+            method:'POST',
+            data:{
+                id: id_producto,
+                _token:$('input[name="_token"]').val()
+            }
+        }).done(function(res){   
+            
+                console.log(res);
+                if(res !== "null"){
+                    var datosProducto = JSON.parse(res)
+
+                    $("#stock").val(datosProducto.stockTeorico);
+                    // $("#unidadesanuales").val(datosProducto.unidadesAnuales);
+                }
+                    else{
+                        $("#stock").val(0);
+                        // $("#unidadesanuales").val(0);
+                    }
+        });
+    });
+
+    
+    $(document).ready(function(){
+        var stock = $("#stock").val();
+        var cont = 0;
+        $("#id_producto").change(function(){
+            cont = 0;
+        });    
+        
+        $("#unidadesRetiradas").keyup(function(){
+            
+            if(cont == 0){
+         stock = $("#stock").val();
+
+            }
+                var unidadesRetiro =  $(this).val();
+                var newStock = stock - unidadesRetiro;
+                $("#stock").val(newStock);
+                
+            cont++;
+            
+        });
+    });
 </script>
 @stop

@@ -1,11 +1,11 @@
-<div class="modal fade" aria-hidden="true" role="dialog" tabindex="-1" id="modal-edit-{{$dataIndiceExactitud->id_producto}}">
+<div class="modal fade" aria-hidden="true" role="dialog" tabindex="-1" id="modal-delete-{{$dataReportes->id_reportes}}">
     <div class="modal-dialog modal-dialog-centered" role="document">  
-        <form  action="/reportes/indiceExactitud/{{ $dataIndiceExactitud->id_producto }}"  method="POST" enctype="multipart/form-data">
+        <form  action="{{route ('inventario.destroy',$dataReportes->id_reportes)}}" method="POST">
             @csrf
-            @method("PUT")
+            @method("DELETE")
             <div class="modal-content">
                 <div class="modal-header" style="background-color: rgb(40, 117, 162);">
-                    <h4 class="modal-title" style="color:white;">Calcular indice de Exactitud</h4>
+                    <h4 class="modal-title" style="color:white;">Eliminar Registro de inventario</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true" style="color:white;">x</span>
                     </button>
@@ -17,9 +17,7 @@
                 </ul>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="stockReal">Stock Real</label>
-                        <input type="text" class="form-control" id="stockReal" aria-describedby="" value="{{$dataIndiceExactitud->stockReal}}"
-                            placeholder="Ingrese Titulo" name="stockReal">
+                        <p>Esta seguro que desea eliminar el registro de inventario "{{$dataReportes->nombre}}" ?</p>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -29,4 +27,4 @@
             </div>
         </form>
     </div>
-</div>
+</div> 

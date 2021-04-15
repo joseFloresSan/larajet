@@ -260,8 +260,14 @@ return [
                     'label_color' => 'success',
                 ],   
                 [
-                    'text' => 'Historial',
+                    'text' => 'Retiro Productos',
                     'url'  => '/historial',
+                    'icon'  => 'fas fa-clipboard-list',
+                    'label_color' => 'success',
+                ],
+                [
+                    'text' => 'Historial Inventario',
+                    'url'  => '/historialInventario',
                     'icon'  => 'fas fa-clipboard-list',
                     'label_color' => 'success',
                 ], 

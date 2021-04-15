@@ -4,6 +4,7 @@
 
 @section('content_header')
     <h1>Inventario</h1>
+    <!-- {{ var_dump($reportes) }} -->
 @stop
 
 @section('content')
@@ -12,12 +13,12 @@
 <table id="productos"class="table table-striped table-bordered shadow-lg mt-4" style="width:100%">
     <thead class="bg-primary text-white">
         <tr>
-            <th scope="col">Codigo</th>
+            <th scope="col">Fecha</th>
             <th scope="col">Nombre</th>
             <th scope="col">Costo Por Orden</th>
-            <th scope="col">Costo De  <br> Mantenimiento</th>
-            <th scope="col">Unidades <br> Anuales</th>
-            <th scope="col">Unidades  <br> Mensuales</th>
+            <th scope="col">Costo De Mantenimiento</th>
+            <th scope="col">Unidades Anuales</th>
+            <th scope="col">Unidades Mensuales</th>
             <th scope="col">Stock</th>
             <th scope="col">Precio</th>
             <th scope="col">Acciones</th>
@@ -26,7 +27,7 @@
     <tbody>
         @foreach($reportes as $dataReportes)
             <tr>
-                <td>{{$dataReportes->codigo}} </td>
+                <td>{{ \Carbon\Carbon::parse($dataReportes->created_at)->format('d/m/Y') }} </td>
                 <td>{{$dataReportes->nombre}} </td>
                 <td>{{$dataReportes->costoPorOrden}} </td>
                 <td>{{$dataReportes->costoDeMantenimiento}} % </td>
@@ -35,15 +36,21 @@
                 <td>{{$dataReportes->stockTeorico}} </td>
                 <td>{{$dataReportes->precio}} </td>
                 <td>
-                    <form action="{{route ('inventario.destroy',$dataReportes->id_reportes)}}" method="POST">
-                    <a  href="/inventario/{{$dataReportes->id_reportes}}/edit" class="btn btn-info">Editar</a>
+                    <!-- <a  href="/inventario/{{$dataReportes->id_reportes}}/edit" class="btn btn-info">Editar</a> -->
+                    <a class="btn btn-info mb-4" href="" data-target="#modal-edit-{{$dataReportes->id_reportes}}" data-toggle="modal">Editar</a>
+                    <a class="btn btn-danger mb-4" href="" data-target="#modal-delete-{{$dataReportes->id_reportes}}" data-toggle="modal">Borrar</a>
+                 
+                    <!-- <a  href="/inventario/actu alizar/{{$dataReportes->id_reportes}}" class="btn btn-warning">Actualizar</a> -->
+                    <!-- <form action="{{route ('inventario.destroy',$dataReportes->id_reportes)}}" method="POST">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger">Borrar</button>
-                    </form>
+                    </form> -->
                 </td>
 
             </tr>
+            @include('inventario.editModal')
+            @include('inventario.deleteModal')
         @endforeach
     </tbody>
 

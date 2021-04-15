@@ -112,10 +112,6 @@
 
                     $("#stock").val(datosProducto.stockTeorico);
                     $("#unidadesanuales").val(datosProducto.unidadesAnuales);
-                    $("#costopororden").val(datosProducto.costoPorOrden);
-                    $("#costodemantenimiento").val(datosProducto.costoDeMantenimiento);
-                    $("#precio").val(datosProducto.precio);
-                    $("#unidadesmensuales").focus();
                 }
                     else{
                         $("#stock").val(0);

@@ -20,23 +20,58 @@ class InventarioController extends Controller
     {
         $datosProducto = DB::table('reportes as r')
                          ->join('producto as p','p.id_producto','=','r.id_producto')
-                         ->select('r.stockTeorico','r.unidadesAnuales')
+                         ->select('r.stockTeorico','r.unidadesAnuales','r.costoPorOrden', 
+                                           'r.costoDeMantenimiento','r.precio')
                          ->where('r.id_producto','=',$request->get('id'))
                          ->orderByDesc('r.created_at')
                          ->first();
         return response(json_encode($datosProducto),200)->header('content-type','text/plain');
         
     }
-
-    public function index()
-    {
+    public function showHistorialInventario (){
         $reportes = DB::table('reportes as r')
         ->join('producto as p', 'p.id_producto','=','r.id_producto')
         ->select('p.nombre','p.codigo','r.id_reportes', 'r.costoPorOrden', 'r.costoDeMantenimiento',
                  'r.unidadesAnuales', 'r.unidadesMensuales','r.stockTeorico',
                  'r.stockReal','r.precio','r.inventarioPromedio','r.costoConservacion',
-                 'r.costoPedido','r.indiceExactitud')
+                 'r.costoPedido','r.indiceExactitud','r.created_at')
         ->get();
+        
+        return view('historial.inventario.index')->with('reportes', $reportes);
+    }
+    public function index()
+    {
+        // $reportes = DB::table('reportes as rep')
+        // ->join('producto as p', 'p.id_producto','=','rep.id_producto')
+        // ->joinSub()
+        // ->select('p.nombre','p.codigo','rep.id_reportes', 'rep.costoPorOrden', 'rep.costoDeMantenimiento',
+        //          'rep.unidadesAnuales', 'rep.unidadesMensuales','rep.stockTeorico',
+        //          'rep.stockReal','rep.precio','rep.inventarioPromedio','rep.costoConservacion',
+        //          'rep.costoPedido','rep.indiceExactitud','rep.created_at')
+        // ->whereIn('created_at', function($query){
+        //     $query->select(DB::raw('MAX(created_at)'))->from('reportes')
+        //     ->where('rep.id_producto','=', '.id_producto')
+        //     ->get();
+        // })
+        // ->get();
+
+        $ultimosRegistros = DB::table('reportes')
+                            ->select('id_producto', DB::raw("MAX(created_at) as 'lastReport'"))
+                            ->groupBy('id_producto');
+        
+        $reportes = DB::table('reportes as rep')
+        ->join('producto as p', 'p.id_producto','=','rep.id_producto')
+        ->joinSub($ultimosRegistros,'ultimosRegistros', function($join){
+            $join->on('rep.id_producto','=',DB::raw("ultimosRegistros.id_producto"))
+            ->where('rep.created_at','=',DB::raw("ultimosRegistros.lastReport"))
+            ->groupBy('id_producto');
+        })
+        ->select('p.nombre','p.codigo','rep.id_reportes', 'rep.costoPorOrden', 'rep.costoDeMantenimiento',
+        'rep.unidadesAnuales', 'rep.unidadesMensuales','rep.stockTeorico',
+        'rep.stockReal','rep.precio','rep.inventarioPromedio','rep.costoConservacion',
+        'rep.costoPedido','rep.indiceExactitud','rep.created_at')
+        ->get();
+        
         return view('inventario.index')->with('reportes', $reportes);
     }
 
@@ -59,6 +94,7 @@ class InventarioController extends Controller
      */
     public function store(Request $request)
     {
+        
         $reporte = new Reportes();
         $reporte->id_producto = $request->get('id_producto');
         $reporte->costoPorOrden = $request->get('costopororden');
@@ -106,7 +142,7 @@ class InventarioController extends Controller
         ->where('id_reportes','=',$id)
         ->first();
 
-        return view('inventario.edit', compact('productos', 'reporte'));
+        return view('historial.retiro.edit', compact('productos', 'reporte'));
     }
 
     /**
@@ -119,7 +155,7 @@ class InventarioController extends Controller
     public function update(Request $request, $id)
     {
         $reporte = Reportes::findOrFail($id);
-        $reporte->id_producto = $request->get('id_producto');
+        // $reporte->id_producto = $request->get('id_producto');
         $reporte->costoPorOrden = $request->get('costopororden');
         $reporte->costoDeMantenimiento = $request->get('costodemantenimiento');
         $reporte->unidadesAnuales = $request->get('unidadesanuales');

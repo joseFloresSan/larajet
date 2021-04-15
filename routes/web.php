@@ -29,6 +29,9 @@ Route::resource('/empleados','App\Http\Controllers\EmpleadoController');
 Route::resource('/producto','App\Http\Controllers\ProductoController');
 Route::resource('/historial','App\Http\Controllers\HistorialController');
 
+Route::get('/historialInventario','App\Http\Controllers\InventarioController@showHistorialInventario');
+Route::get('/inventario/actualizar/{{$id_reportes}}','App\Http\Controllers\InventarioController@showHistorialInventario');
+
 // consulta ajax 
 Route::post('/inventario/getStockAnualUnits','App\Http\Controllers\InventarioController@getStockAnualUnits');
 // Route::post('/reportes/costodeconservacions',[\App\Http\Controllers\ReportesController::class, 'showCostoConservacion']);
