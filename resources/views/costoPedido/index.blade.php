@@ -7,46 +7,51 @@
 @stop
 
 @section('content')
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-body">
+            <table id="costodeconservacions"class="table table-striped table-bordered shadow-lg mt-4" style="width:100%">
+                <thead class="bg-primary text-white">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Codigo</th>
+                        <th scope="col">Nombre</th>            
+                        <th scope="col">Costo Fijo por Orden</th>
+                        <th scope="col">Unidades Anuales</th>
+                        <th scope="col">Inventario Promedio</th>
+                        <th scope="col">CTO</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($costosPedido as $dataCostoPedidos)
+                        <tr>
+                            <td>{{$dataCostoPedidos->id_producto}} </td>
+                            <td>{{ \Carbon\Carbon::parse($dataCostoPedidos->created_at)->format('d/m/Y') }} </td>
+                            <td>{{$dataCostoPedidos->codigo}} </td>
+                            <td>{{$dataCostoPedidos->nombre}} </td>                
+                            <td>{{$dataCostoPedidos->costoPorOrden}} </td>
+                            <td>{{$dataCostoPedidos->unidadesAnuales}} </td>
+                            <td>{{$dataCostoPedidos->inventarioPromedio}} </td>                
+                            <td>{{$dataCostoPedidos->costoPedido}} </td>
+                            <td>
+                                <form action="{{route ('costodeconservacions.destroy',$dataCostoPedidos->id_producto)}}" method="POST">
+                                
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">Borrar</button>
+                                </form>
+                            </td>
 
-<table id="costodeconservacions"class="table table-striped table-bordered shadow-lg mt-4" style="width:100%">
-    <thead class="bg-primary text-white">
-        <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Fecha</th>
-            <th scope="col">Codigo</th>
-            <th scope="col">Nombre</th>            
-            <th scope="col">Costo Fijo por Orden</th>
-            <th scope="col">Unidades Anuales</th>
-            <th scope="col">Inventario Promedio</th>
-            <th scope="col">CTO</th>
-            <th scope="col">Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($costosPedido as $dataCostoPedidos)
-            <tr>
-                <td>{{$dataCostoPedidos->id_producto}} </td>
-                <td>{{ \Carbon\Carbon::parse($dataCostoPedidos->created_at)->format('d/m/Y') }} </td>
-                <td>{{$dataCostoPedidos->codigo}} </td>
-                <td>{{$dataCostoPedidos->nombre}} </td>                
-                <td>{{$dataCostoPedidos->costoPorOrden}} </td>
-                <td>{{$dataCostoPedidos->unidadesAnuales}} </td>
-                <td>{{$dataCostoPedidos->inventarioPromedio}} </td>                
-                <td>{{$dataCostoPedidos->costoPedido}} </td>
-                <td>
-                    <form action="{{route ('costodeconservacions.destroy',$dataCostoPedidos->id_producto)}}" method="POST">
-                    
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Borrar</button>
-                    </form>
-                </td>
+                        </tr>
+                    @endforeach
+                </tbody>
 
-            </tr>
-        @endforeach
-    </tbody>
-
-</table>
+            </table>
+        </div>
+    </div>
+</div>   
 @stop
 
 @section('css')

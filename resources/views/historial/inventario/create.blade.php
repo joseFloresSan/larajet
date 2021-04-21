@@ -93,33 +93,33 @@
         inputUnidadesAnuales.focus();
     });
 
-    $("#id_producto").change(function() {
-        var id_producto = $("#id_producto").val();
-        console.log(id_producto);
+        $("#id_producto").change(function() {
+            var id_producto = $("#id_producto").val();
+            console.log(id_producto);
 
-        $.ajax({
-            url: '/inventario/getStockAnualUnits',
-            method:'POST',
-            data:{
-                id: id_producto,
-                _token:$('input[name="_token"]').val()
-            }
-        }).done(function(res){   
-            
-                console.log(res);
-                if(res !== "null"){
-                    var datosProducto = JSON.parse(res)
-
-                    $("#stock").val(datosProducto.stockTeorico);
-                    $("#unidadesanuales").val(datosProducto.unidadesAnuales);
+            $.ajax({
+                url: '/inventario/getStockAnualUnits',
+                method:'POST',
+                data:{
+                    id: id_producto,
+                    _token:$('input[name="_token"]').val()
                 }
-                    else{
-                        $("#stock").val(0);
-                        $("#unidadesanuales").val(0);
+            }).done(function(res){   
+                
+                    console.log(res);
+                    if(res !== "null"){
+                        var datosProducto = JSON.parse(res)
+
+                        $("#stock").val(datosProducto.stockTeorico);
+                        $("#unidadesanuales").val(datosProducto.unidadesAnuales);
                     }
-                    
+                        else{
+                            $("#stock").val(0);
+                            $("#unidadesanuales").val(0);
+                        }
+                        
+            });
         });
-    });
 </script>
 
 @stop

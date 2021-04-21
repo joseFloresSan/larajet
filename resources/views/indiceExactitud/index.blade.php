@@ -7,52 +7,57 @@
 @stop
 
 @section('content')
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-body">
+            <table id="costodeconservacions"class="table table-striped table-bordered shadow-lg mt-4" style="width:100%">
+                <thead class="bg-primary text-white">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Codigo</th>
+                        <th scope="col">Nombre</th>            
+                        <th scope="col">Stock Teorico</th>
+                        <th scope="col">Stock Real</th>
+                        <th scope="col">Indice de Exactitud</th>
+                        
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($indiceExactitud as $dataIndiceExactitud)
+                        <tr>
+                            <td>{{$dataIndiceExactitud->id_producto}} </td>
+                            <td>{{ \Carbon\Carbon::parse($dataIndiceExactitud->created_at)->format('d/m/Y') }} </td>
+                            <td>{{$dataIndiceExactitud->codigo}} </td>
+                            <td>{{$dataIndiceExactitud->nombre}} </td>                
+                            <td>{{$dataIndiceExactitud->stockTeorico}} </td>
+                            <td>{{$dataIndiceExactitud->stockReal}} </td>
+                            <td>{{$dataIndiceExactitud->indiceExactitud}}</td>       
+                            <td>
+                                <!-- <form action="{{route ('costodeconservacions.destroy',$dataIndiceExactitud->id_producto)}}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">Borrar</button>
+                                </form> -->
+                                <a href="" data-target="#modal-edit-{{$dataIndiceExactitud->id_producto}}" data-toggle="modal">
+                                    <button class="btn btn-success">
+                                        <i class="fas fa-edit"></i>
+                                        Stock Real
+                                    </button>
+                                </a>
+                            </td>
+                        
+                        </tr>
 
-<table id="costodeconservacions"class="table table-striped table-bordered shadow-lg mt-4" style="width:100%">
-    <thead class="bg-primary text-white">
-        <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Fecha</th>
-            <th scope="col">Codigo</th>
-            <th scope="col">Nombre</th>            
-            <th scope="col">Stock Teorico</th>
-            <th scope="col">Stock Real</th>
-            <th scope="col">Indice de Exactitud</th>
-            
-            <th scope="col">Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($indiceExactitud as $dataIndiceExactitud)
-            <tr>
-                <td>{{$dataIndiceExactitud->id_producto}} </td>
-                <td>{{ \Carbon\Carbon::parse($dataIndiceExactitud->created_at)->format('d/m/Y') }} </td>
-                <td>{{$dataIndiceExactitud->codigo}} </td>
-                <td>{{$dataIndiceExactitud->nombre}} </td>                
-                <td>{{$dataIndiceExactitud->stockTeorico}} </td>
-                <td>{{$dataIndiceExactitud->stockReal}} </td>
-                <td>{{$dataIndiceExactitud->indiceExactitud}}</td>       
-                <td>
-                    <!-- <form action="{{route ('costodeconservacions.destroy',$dataIndiceExactitud->id_producto)}}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Borrar</button>
-                    </form> -->
-                    <a href="" data-target="#modal-edit-{{$dataIndiceExactitud->id_producto}}" data-toggle="modal">
-                        <button class="btn btn-success">
-                            <i class="fas fa-edit"></i>
-                            Stock Real
-                        </button>
-                    </a>
-                </td>
-               
-            </tr>
+                        @include('indiceExactitud.modalStockReal')
+                    @endforeach
+                </tbody>
 
-            @include('indiceExactitud.modalStockReal')
-        @endforeach
-    </tbody>
-
-</table>
+            </table>
+        </div>
+    </div>
+</div>   
     
 @stop
 

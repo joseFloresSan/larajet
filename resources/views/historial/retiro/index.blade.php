@@ -9,39 +9,45 @@
 @section('content')
 <a class="btn btn-info mb-4" href="" data-target="#modal-create-retiro-producto" data-toggle="modal"> Retirar Producto </a>
     @include('historial.retiro.createModal')
-<table id="productos"class="table table-striped table-bordered shadow-lg mt-4" style="width:100%">
-    <thead class="bg-primary text-white">
-        <tr>
-            <th scope="col">Fecha</th>
-            <th scope="col">Nombre</th>
-            <th scope="col">Producto</th>
-            <th scope="col">Unidades Retiradas</th>
-            <th scope="col">Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($historial as $dataHistorial)
-            <tr>
-                <td>{{ \Carbon\Carbon::parse($dataHistorial->created_at)->format('d/m/Y') }} </td>
-                <td>{{$dataHistorial->empleado}} </td>
-                <td>{{$dataHistorial->producto}} </td>
-                <td>{{$dataHistorial->unidadesRetiradas}} </td>
-                <td>
-                <a class="btn btn-info mb-4" href="" data-target="#modal-edit-{{$dataHistorial->id_historial}}" data-toggle="modal">Editar</a>
-                <a class="btn btn-danger mb-4" href="" data-target="#modal-delete-{{$dataHistorial->id_historial}}" data-toggle="modal">Borrar</a>
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-body">
+            <table id="productos"class="table table-striped table-bordered shadow-lg mt-4" style="width:100%">
+                <thead class="bg-primary text-white">
+                    <tr>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Producto</th>
+                        <th scope="col">Unidades Retiradas</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($historial as $dataHistorial)
+                        <tr>
+                            <td>{{ \Carbon\Carbon::parse($dataHistorial->created_at)->format('d/m/Y') }} </td>
+                            <td>{{$dataHistorial->empleado}} </td>
+                            <td>{{$dataHistorial->producto}} </td>
+                            <td>{{$dataHistorial->unidadesRetiradas}} </td>
+                            <td>
+                            <a class="btn btn-info mb-4" href="" data-target="#modal-edit-{{$dataHistorial->id_historial}}" data-toggle="modal">Editar</a>
+                            <a class="btn btn-danger mb-4" href="" data-target="#modal-delete-{{$dataHistorial->id_historial}}" data-toggle="modal">Borrar</a>
 
-                    <!-- <form action="{{route ('historial.destroy',$dataHistorial->id_historial)}}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Borrar</button>
-                    </form> -->
-                </td>
-            </tr>
-            @include('historial.retiro.editModal')
-            @include('historial.retiro.deleteModal')
-        @endforeach
-    </tbody>
-</table>
+                                <!-- <form action="{{route ('historial.destroy',$dataHistorial->id_historial)}}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">Borrar</button>
+                                </form> -->
+                            </td>
+                        </tr>
+                        @include('historial.retiro.editModal')
+                        @include('historial.retiro.deleteModal')
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>         
 @stop
 
 @section('css')

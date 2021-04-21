@@ -34,6 +34,7 @@ Route::get('/inventario/actualizar/{{$id_reportes}}','App\Http\Controllers\Inven
 
 // consulta ajax 
 Route::post('/inventario/getStockAnualUnits','App\Http\Controllers\InventarioController@getStockAnualUnits');
+Route::post('/dash/getCostoConservacion','App\Http\Controllers\DashboardController@getCostoConservacion');
 // Route::post('/reportes/costodeconservacions',[\App\Http\Controllers\ReportesController::class, 'showCostoConservacion']);
 
 // fin consulta ajax

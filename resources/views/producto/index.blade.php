@@ -10,33 +10,39 @@
 <!-- <a href="producto/create" class="btn btn-primary mb-4"></a> -->
 <a class="btn btn-info mb-4" href="" data-target="#modal-create-producto" data-toggle="modal"> Crear Producto </a>
 @include('producto.createModal')
-<table id="productos"class="table table-striped table-bordered shadow-lg mt-4" style="width:100%">
-    <thead class="bg-primary text-white">
-        <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Codigo</th>
-            <th scope="col">Nombre</th>
-            <th scope="col">Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($productos as $producto)
-            <tr>
-                <td>{{$producto->id_producto}} </td>
-                <td>{{$producto->codigo}} </td>
-                <td>{{$producto->nombre}} </td>
-                <td>
-                    <a class="btn btn-info mb-4" href="" data-target="#modal-edit-{{$producto->id_producto}}" data-toggle="modal">Editar</a>
-                    <a class="btn btn-danger mb-4" href="" data-target="#modal-delete-{{$producto->id_producto}}" data-toggle="modal">Eliminar</a>
-                </td>
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-body">
+            <table id="productos"class="table table-striped table-bordered shadow-lg mt-4" style="width:100%">
+                <thead class="bg-primary text-white">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Codigo</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($productos as $producto)
+                        <tr>
+                            <td>{{$producto->id_producto}} </td>
+                            <td>{{$producto->codigo}} </td>
+                            <td>{{$producto->nombre}} </td>
+                            <td>
+                                <a class="btn btn-info mb-4" href="" data-target="#modal-edit-{{$producto->id_producto}}" data-toggle="modal">Editar</a>
+                                <a class="btn btn-danger mb-4" href="" data-target="#modal-delete-{{$producto->id_producto}}" data-toggle="modal">Eliminar</a>
+                            </td>
 
-            </tr>
-            @include('producto.deleteModal')
-            @include('producto.editModal')
-        @endforeach
-    </tbody>
+                        </tr>
+                        @include('producto.deleteModal')
+                        @include('producto.editModal')
+                    @endforeach
+                </tbody>
 
-</table>
+            </table>
+        </div>
+    </div>
+</div> 
 @stop
 
 @section('css')

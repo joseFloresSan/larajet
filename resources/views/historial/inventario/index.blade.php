@@ -7,45 +7,51 @@
 @stop
 
 @section('content')
-<table id="productos"class="table table-striped table-bordered shadow-lg mt-4" style="width:100%">
-    <thead class="bg-primary text-white">
-        <tr>
-            <th scope="col">Fecha</th>
-            <th scope="col">Nombre</th>
-            <th scope="col">Costo Por Orden</th>
-            <th scope="col">Costo De  <br> Mantenimiento</th>
-            <th scope="col">Unidades <br> Anuales</th>
-            <th scope="col">Unidades  <br> Mensuales</th>
-            <th scope="col">Stock</th>
-            <th scope="col">Precio</th>
-            <!-- <th scope="col">Acciones</th> -->
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($reportes as $dataReportes)
-            <tr>
-                <td>{{ \Carbon\Carbon::parse($dataReportes->created_at)->format('d/m/Y') }} </td>
-                <td>{{$dataReportes->nombre}} </td>
-                <td>{{$dataReportes->costoPorOrden}} </td>
-                <td>{{$dataReportes->costoDeMantenimiento}} % </td>
-                <td>{{$dataReportes->unidadesAnuales}} </td>
-                <td>{{$dataReportes->unidadesMensuales}} </td>
-                <td>{{$dataReportes->stockTeorico}} </td>
-                <td>{{$dataReportes->precio}} </td>
-                <!-- <td>
-                    <form action="{{route ('inventario.destroy',$dataReportes->id_reportes)}}" method="POST">
-                    <a  href="/inventario/{{$dataReportes->id_reportes}}/edit" class="btn btn-info">Editar</a>
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Borrar</button>
-                    </form>
-                </td> -->
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-body">
+            <table id="productos"class="table table-striped table-bordered shadow-lg mt-4" style="width:100%">
+                <thead class="bg-primary text-white">
+                    <tr>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Costo Por Orden</th>
+                        <th scope="col">Costo De  <br> Mantenimiento</th>
+                        <th scope="col">Unidades <br> Anuales</th>
+                        <th scope="col">Unidades  <br> Mensuales</th>
+                        <th scope="col">Stock</th>
+                        <th scope="col">Precio</th>
+                        <!-- <th scope="col">Acciones</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($reportes as $dataReportes)
+                        <tr>
+                            <td>{{ \Carbon\Carbon::parse($dataReportes->created_at)->format('d/m/Y') }} </td>
+                            <td>{{$dataReportes->nombre}} </td>
+                            <td>{{$dataReportes->costoPorOrden}} </td>
+                            <td>{{$dataReportes->costoDeMantenimiento}} % </td>
+                            <td>{{$dataReportes->unidadesAnuales}} </td>
+                            <td>{{$dataReportes->unidadesMensuales}} </td>
+                            <td>{{$dataReportes->stockTeorico}} </td>
+                            <td>{{$dataReportes->precio}} </td>
+                            <!-- <td>
+                                <form action="{{route ('inventario.destroy',$dataReportes->id_reportes)}}" method="POST">
+                                <a  href="/inventario/{{$dataReportes->id_reportes}}/edit" class="btn btn-info">Editar</a>
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">Borrar</button>
+                                </form>
+                            </td> -->
 
-            </tr>
-        @endforeach
-    </tbody>
+                        </tr>
+                    @endforeach
+                </tbody>
 
-</table>
+            </table>
+        </div>
+    </div>
+</div>   
 @stop
 
 @section('css')
